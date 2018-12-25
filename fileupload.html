@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		#picture {
+	        position: relative;
+	        width: 50px;
+	        height: 50px;
+	        box-sizing: border-box;
+	        border-radius: 50%;
+	    }
+	</style>
+	<script src="plug/jquery.min.js"></script>
+	<script src="plug/jquery.form.js"></script>
+
+</head>
+<body>
+	<form action="" id="form_con" enctype="multipart/form-data">
+		<label>用户名：</label>
+		<input type="text" name="username">
+		<label>密码：</label>
+		<input type="password" name="pwd">
+		<label>头像：</label>
+		<input type="file" name="avat" id="img_upload" accept="image/*" multiple="false">
+        <img id="picture" src="" alt="头像" class="img-rounded">
+		<input type="button" name="提交" onclick="submit_con()" value="提交">
+	</form>
+	<script type="text/javascript">
+		var baseUrl = "http://192.168.16.203:8081";
+		
+		//为头像上传设置实时预览监听器
+
+		function setOnchangeListener() {
+		    $("body").on("change","#img_upload",previewFile);
+		}
+
+		//实时预览上传图片
+		function previewFile() {
+		    var preview=$("#picture");
+		    var file=$("#img_upload")[0].files[0];
+		    var reader=new FileReader();
+		    reader.addEventListener("load",function () {
+		       preview.prop("src",reader.result);
+		    },false);
+		    if(file){
+		        reader.readAsDataURL(file);
+		    }
+		}
+		setOnchangeListener();
+		var submit_con = function(){
+
+			var options = {
+				url: baseUrl + "/upload",
+				type: "post",
+				dataType: "json",
+				resetForm: true,
+				success: function(msg){
+					console.log(msg)
+					var name = msg.file;
+					$("#picture").attr("src","./img/"+name);
+				},
+				error:function(err){
+					console.log(err)
+				}
+			}
+			$("#form_con").ajaxSubmit(options);
+		}
+	</script>
+</body>
+</html>
