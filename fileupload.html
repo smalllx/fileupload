@@ -48,9 +48,9 @@
 		        reader.readAsDataURL(file);
 		    }
 		}
-		setOnchangeListener();
+		setOnchangeListener();//调用实时预览监听器函数
 		var submit_con = function(){
-
+			// 配置options参数，主要参数见文档
 			var options = {
 				url: baseUrl + "/upload",
 				type: "post",
@@ -59,7 +59,7 @@
 				success: function(msg){
 					console.log(msg)
 					var name = msg.file;
-					$("#picture").attr("src","./img/"+name);
+					// $("#picture").attr("src","./img/"+name); 改成弹出框提示上传成功也许会更好
 				},
 				error:function(err){
 					console.log(err)
